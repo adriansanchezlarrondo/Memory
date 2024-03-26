@@ -1,19 +1,14 @@
 import { useState, useEffect } from 'react';
 import GrupoTarjeta from "../components/GrupoTarjetas";
-// import { arrayPersonajes } from '../bd'
 
 export default function Juego() {
     const [clicks, setClicks] = useState(0);
     const [pokemonAletorios, setPokemonsAleatorias] = useState([]);
-    const pokemons = []
-
-    const handleGeneralClick = () => {
-        setClicks(clicks + 1);
-    }
 
     useEffect(() => {
         async function fetchData(){
             try {
+                const pokemons = []
                 for(let i = 0; i < 9; i++) {
                     const random = Math.floor(Math.random() * 1000)
                     const response = await fetch('https://pokeapi.co/api/v2/pokemon/' + random);
@@ -21,20 +16,21 @@ export default function Juego() {
                         throw new Error('Failed to fetch data');
                     }
                     const data = await response.json();
+                    console.log(data.name);
                     pokemons.push({
+                        id: data.id,
                         nombre: data.name,
                         imagen: data.sprites.other['official-artwork'].front_default,
                     })
                 }
                 
                 console.log('pokemons', pokemons);
-
+                
                 // Duplicar las tarjetas
-                const duplicatedArrayPersonajes = [...pokemons, ...pokemons];
+                const duplicatedPokemons  = [...pokemons, ...pokemons];
                 
                 // Ordenar aleatoriamente las tarjetas
-                const pokemonRandom = duplicatedArrayPersonajes.sort(() => Math.random() - 0.5);
-                console.log('pokemonRandom', pokemonRandom);
+                const pokemonRandom = duplicatedPokemons .sort(() => Math.random() - 0.5);
                 
                 setPokemonsAleatorias(pokemonRandom);
             } catch (error) {
@@ -43,10 +39,15 @@ export default function Juego() {
                 console.log('Petición finalizada');
             }        
         }
-        fetchData();
         
+        fetchData();
     }, []);
-  
+
+    const handleGeneralClick = () => {
+        setClicks(clicks + 1);
+    }
+
+    
     return (
         <div className="bg-slate-700 h-screen">
             <div className='mx-auto'>
