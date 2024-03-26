@@ -1,11 +1,11 @@
 import Header from "./components/Header"
-import Juego from "./views/Juego"
+// import Juego from "./views/Juego"
 
 function App() {
   return (
     <>
       <Header />
-      <Juego />
+      {/* <Juego /> */}
     </>
   )
 }

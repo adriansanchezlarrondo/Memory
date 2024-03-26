@@ -1,8 +1,10 @@
 export default function Home() {
     return (
-        <h1 className="text-3xl font-bold underline">
-            Home
-        </h1>
+        <div className="bg-slate-700 h-screen">
+            <h1 className="text-3xl text-center text-white uppercase pt-4">
+                Home
+            </h1>
+        </div>
     )
 }
   
