@@ -3,7 +3,7 @@ import GrupoTarjeta from "../components/GrupoTarjetas";
 
 export default function Juego() {
     const [clicks, setClicks] = useState(0);
-    const [pokemonAletorios, setPokemonsAleatorias] = useState([]);
+    const [pokemonAletorios, setPokemonsAleatorios] = useState([]);
 
     useEffect(() => {
         async function fetchData(){
@@ -16,7 +16,7 @@ export default function Juego() {
                         throw new Error('Failed to fetch data');
                     }
                     const data = await response.json();
-                    console.log(data.name);
+                    // console.log(data.name);
                     pokemons.push({
                         id: data.id,
                         nombre: data.name,
@@ -24,15 +24,12 @@ export default function Juego() {
                     })
                 }
                 
-                console.log('pokemons', pokemons);
+                // console.log('pokemons', pokemons);
                 
-                // Duplicar las tarjetas
-                const duplicatedPokemons  = [...pokemons, ...pokemons];
-                
-                // Ordenar aleatoriamente las tarjetas
-                const pokemonRandom = duplicatedPokemons .sort(() => Math.random() - 0.5);
-                
-                setPokemonsAleatorias(pokemonRandom);
+                // Duplicar las tarjetas y Ordenar aleatoriamente las tarjetas
+                const pokemonRandom  = [...pokemons, ...pokemons].sort(() => Math.random() - 0.5);
+                                
+                setPokemonsAleatorios(pokemonRandom);
             } catch (error) {
                 console.error(error.message);
             } finally {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Tarjeta({ nombre, imagen, onGeneralClick }){
+export default function Tarjeta({ id, nombre, imagen, onGeneralClick }){
     const [clicks, setClicks] = useState(0);
     const [girada, setGirada] = useState(false);
 
@@ -13,7 +13,7 @@ export default function Tarjeta({ nombre, imagen, onGeneralClick }){
     }
 
     return (
-        <div className={`rounded overflow-hidden shadow-lg bg-zinc-100 p-5 text-gray-700 text-center h-[304px] ${girada ? 'girando' : ''}`} onClick={handleClick} >
+        <div data-idpokemon={id} className={`rounded overflow-hidden shadow-lg bg-zinc-100 p-5 text-gray-700 text-center h-[304px] ${girada ? 'girando' : ''}`} onClick={handleClick} >
             {!girada && (
                 <>
                     <p className="pb-5 text-base">
