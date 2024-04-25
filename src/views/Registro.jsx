@@ -27,24 +27,23 @@ export default function Registro(){
                 return;
             }
 
-            console.log('data', data.user.id);
     
-            // const { data: usuariosDB, error: dbError } = await supabase
-            // .from('usuarios')
-            // .insert([
-            //     {
-            //         nombre: nombre, 
-            //         email: correo, 
-            //         user_id: data.user.id
-            //     },
-            // ]);
+            const { data: usuariosDB, error: dbError } = await supabase
+            .from('usuarios')
+            .insert([
+                {
+                    nombre: nombre, 
+                    email: correo, 
+                    user_id: data.user.id
+                },
+            ]);
         
-            // if (dbError) {
-            //     console.error('Error al insertar usuario en la base de datos:', dbError.message);
-            //     return;
-            // }
-            
-            // navigate('/login')
+            if (dbError) {
+                console.error('Error al insertar usuario en la base de datos:', dbError.message);
+                return;
+            }
+                        
+            navigate('/login')
         } catch (error) {
             console.error('Error general:', error.message);
         }

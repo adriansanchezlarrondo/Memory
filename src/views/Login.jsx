@@ -1,22 +1,45 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase/Supabase';
+import { useAuth } from '../contexts/AuthContext'; // Importa useAuth
 
 export default function Login(){
+    const navigate = useNavigate();
+    const { login } = useAuth(); // Obtén la función login del contexto AuthContext
+
     const [correo, setCorreo] = useState('');
     const [contraseña, setContraseña] = useState('');
   
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Aquí puedes manejar la lógica para enviar los datos del formulario
-        console.log('Correo:', correo);
-        console.log('Contraseña:', contraseña);
 
-        let { data: usuarios, error } = await supabase
-        .from('usuarios')
-        .select('correo')
+        try {
+            let { data: usuarios, error } = await supabase.auth.signInWithPassword({
+                email: correo,
+                password: contraseña,
+            })
+            
+            if (error) {
+                console.error('Error al iniciar usuario:', error.message);
+                return;
+            }
 
-        console.log('usuarios', usuarios);
+            const { data: dataLogin, error: errorLogin } = await supabase
+            .from('usuarios')
+            .update({ logged: true })
+            .eq('email', correo)
+            .select()
+
+            if (errorLogin) {
+                console.error('Error al iniciar usuario:', errorLogin.message);
+                return;
+            }
+
+            login(); // Llama a la función login del contexto AuthContext para actualizar el estado logged
+            navigate('/pokemonMemory');
+        } catch (error) {
+            console.error('Error general:', error.message);
+        }
     };
   
     return (
