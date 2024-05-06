@@ -16,19 +16,22 @@ export default function Juego() {
                         throw new Error('Failed to fetch data');
                     }
                     const data = await response.json();
-                    // console.log(data.name);
+
                     pokemons.push({
                         id: data.id,
                         nombre: data.name,
                         imagen: data.sprites.other['official-artwork'].front_default,
+                        flipped: false,
+                        matched: false,
                     })
                 }
                 
-                // console.log('pokemons', pokemons);
                 
                 // Duplicar las tarjetas y Ordenar aleatoriamente las tarjetas
-                const pokemonRandom  = [...pokemons, ...pokemons].sort(() => Math.random() - 0.5);
-                                
+                const pokemonRandom  = [...pokemons, ...pokemons].sort(() => Math.random() - 0.5)
+
+                console.log('pokemonRandom', pokemonRandom);
+                
                 setPokemonsAleatorios(pokemonRandom);
             } catch (error) {
                 console.error(error.message);
@@ -44,7 +47,6 @@ export default function Juego() {
         setClicks(clicks + 1);
     }
 
-    
     return (
         <div className="bg-slate-700 h-screen">
             <div className='mx-auto'>
@@ -54,9 +56,8 @@ export default function Juego() {
                         Clics Generales ({clicks})
                     </div>
                 </div>
-                <GrupoTarjeta datos={pokemonAletorios} onGeneralClick={handleGeneralClick}/>
+                <GrupoTarjeta datos={pokemonAletorios} onGeneralClick={handleGeneralClick} setPokemonsAleatorios={setPokemonsAleatorios} />
             </div>
         </div>
     )
 }
-  
