@@ -2,10 +2,9 @@ import { useState } from 'react';
 import Tarjeta from './Tarjeta';
 
 export default function GrupoTarjeta({ datos, onGeneralClick, setPokemonsAleatorios }) {
-    const [idPokemon, setIdPokemon] = useState(0);
     const [tarjetasVolteadas, setTarjetasVolteadas] = useState([]);
 
-    const handleCardClick = (e) => {
+    const handleCardClick = (e) => {        
         // Verificar si la tarjeta ya está volteada o si ya hay dos tarjetas volteadas
         if (tarjetasVolteadas.length === 2 || tarjetasVolteadas.includes(parseInt(e.target.id))) {
             setTarjetasVolteadas([])
@@ -17,7 +16,7 @@ export default function GrupoTarjeta({ datos, onGeneralClick, setPokemonsAleator
     
         if (clickedPokemon) {
             const nuevosDatos = datos.map(pokemon => {
-                if (idClick === pokemon.id) {
+                if (clickedPokemon.id === pokemon.id) {
                     return {
                         ...pokemon,
                         flipped: true
@@ -30,16 +29,35 @@ export default function GrupoTarjeta({ datos, onGeneralClick, setPokemonsAleator
             if (tarjetasVolteadas.length === 1) {
                 const primeraTarjetaId = tarjetasVolteadas[0];
                 const primeraTarjetaPokemon = datos.find(pokemon => pokemon.id === primeraTarjetaId)
-                
+
                 if (primeraTarjetaPokemon.nombre === clickedPokemon.nombre) {   // PAREJA ENCONTRADA
                     console.log('pareja encontrada')
+
+                    const pokemonMatches = nuevosDatos.map(pokemon => {
+                        if(pokemon.nombre == clickedPokemon.nombre){
+                            return {
+                                ...pokemon,
+                                matched: true
+                            }
+                        }
+                        return pokemon
+                    })
+
+                    console.log('pokemonMatches', pokemonMatches);
+
+                    setPokemonsAleatorios(pokemonMatches)
                     setTarjetasVolteadas([])
                 } else {    // PAREJA EQUIVOCADA
-                    setTimeout(() => {
-                        const resetPokemons = nuevosDatos.map(pokemon => ({
-                            ...pokemon,
-                            flipped: false
-                        }))
+                    setTimeout(() => {    
+                        const resetPokemons = nuevosDatos.map(pokemon => {
+                            if(!pokemon.matched){
+                                console.log('pokemon.matched', pokemon.matched);
+                                return {
+                                    ...pokemon,
+                                    flipped: false
+                                }
+                            }
+                        })
                         setPokemonsAleatorios(resetPokemons)
                         setTarjetasVolteadas([])
                     }, 1000)
@@ -48,7 +66,6 @@ export default function GrupoTarjeta({ datos, onGeneralClick, setPokemonsAleator
     
             // Actualizar el estado de las tarjetas volteadas solo después de verificar la coincidencia
             setPokemonsAleatorios(nuevosDatos)
-            setIdPokemon(clickedPokemon.id)
             setTarjetasVolteadas([...tarjetasVolteadas, idClick])
         }
     

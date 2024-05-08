@@ -23,7 +23,7 @@ export default function Juego() {
                         nombre: data.name,
                         imagen: data.sprites.other['official-artwork'].front_default,
                         flipped: false,
-                        // matched: false,
+                        matched: false,
                     })
                 }
                 
