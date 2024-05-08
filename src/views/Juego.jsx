@@ -18,17 +18,22 @@ export default function Juego() {
                     const data = await response.json();
 
                     pokemons.push({
-                        id: data.id,
+                        id: null,
+                        idPokemon: data.id,
                         nombre: data.name,
                         imagen: data.sprites.other['official-artwork'].front_default,
                         flipped: false,
-                        matched: false,
+                        // matched: false,
                     })
                 }
                 
                 
                 // Duplicar las tarjetas y Ordenar aleatoriamente las tarjetas
-                const pokemonRandom  = [...pokemons, ...pokemons].sort(() => Math.random() - 0.5)
+                const pokemonRandom  = [...pokemons, ...pokemons].sort(() => Math.random() - 0.5).map((pokemon, index) => ({
+                    ...pokemon,
+                    id: index, 
+                }));
+
 
                 console.log('pokemonRandom', pokemonRandom);
                 
