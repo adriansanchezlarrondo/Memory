@@ -69,8 +69,8 @@ export default function Header() {
     return (
         <header className="bg-zinc-50 py-4">
             <div className="container mx-auto flex items-center justify-between">
-                <nav className='w-full'></nav>
-                <nav className="w-full">
+                <nav></nav>
+                <nav className="flex justify-center">
                     <ul className="flex space-x-4">
                         {logged  && (
                             <>
@@ -84,13 +84,13 @@ export default function Header() {
                                     <Link to="/marvelMemory" className="border p-2 px-3 shadow-lg">Marvel Memory</Link>
                                 </li>
                                 <li>
-                                    <Link to="/acerca" className="border p-2 px-3 shadow-lg">A cerca de</Link>
+                                    <Link to="/partidas" className="border p-2 px-3 shadow-lg">Tabla Partidas</Link>
                                 </li>
                             </>
                         )}
                     </ul>
                 </nav>
-                <nav className="w-full">
+                <nav className="flex justify-end">
                     <ul className="flex justify-end space-x-4">
                         {!logged  ? (
                             <>

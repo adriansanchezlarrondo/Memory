@@ -4,7 +4,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [logged, setLogged] = useState(false);
-
+  const [puntuacion, setPuntuacion] = useState(0)
   const login = () => {
     setLogged(true);
   };
@@ -13,8 +13,12 @@ export const AuthProvider = ({ children }) => {
     setLogged(false);
   };
 
+  const points = () => {
+    setPuntuacion(puntuacion + 10)
+  }
+
   return (
-    <AuthContext.Provider value={{ logged, login, logout }}>
+    <AuthContext.Provider value={{ logged, login, logout, puntuacion, points }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import Tarjeta from './Tarjeta';
 
 export default function GrupoTarjeta({ datos, onGeneralClick, setPokemonsAleatorios }) {
+    const { points } = useAuth(); // contexto
+    
     const [tarjetasVolteadas, setTarjetasVolteadas] = useState([]);
 
     const handleCardClick = (e) => {        
@@ -32,7 +35,7 @@ export default function GrupoTarjeta({ datos, onGeneralClick, setPokemonsAleator
 
                 if (primeraTarjetaPokemon.nombre === clickedPokemon.nombre) {   // PAREJA ENCONTRADA
                     console.log('pareja encontrada')
-
+                    points()
                     const pokemonMatches = nuevosDatos.map(pokemon => {
                         if(pokemon.nombre == clickedPokemon.nombre){
                             return {
