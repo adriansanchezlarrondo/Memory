@@ -5,9 +5,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../supabase/Supabase';
 
 export default function Juego() {
-    const { puntuacion } = useAuth();
+    const { puntuacion, setPuntuacion } = useAuth();
     const navigate = useNavigate()
-    
+
     const [clicks, setClicks] = useState(0);
     const [time, setTime] = useState(20);
     const [pokemonAletorios, setPokemonsAleatorios] = useState([]);
@@ -15,6 +15,7 @@ export default function Juego() {
     useEffect(() => {
         async function fetchData(){
             try {
+                setPuntuacion(0)
                 const pokemons = []
                 for(let i = 0; i < 9; i++) {
                     const random = Math.floor(Math.random() * 386)
@@ -43,7 +44,6 @@ export default function Juego() {
 
 
                 console.log('pokemonRandom', pokemonRandom);
-                
                 setPokemonsAleatorios(pokemonRandom);
             } catch (error) {
                 console.error(error.message);
@@ -73,7 +73,6 @@ export default function Juego() {
                     return
                 }
 
-                console.log('usuario', dSelect[0].nombre);
                 const usuario = dSelect[0].nombre
 
                 const { data: dInsert, error: eInsert } = await supabase
