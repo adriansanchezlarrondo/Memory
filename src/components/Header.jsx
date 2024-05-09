@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Header() {
-    const { logged, logout } = useAuth();
+    const { logged, logout, isLogged } = useAuth();
+
+    isLogged()
 
     return (
         <header className="bg-zinc-50 py-4">

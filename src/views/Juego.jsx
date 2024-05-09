@@ -102,6 +102,7 @@ export default function Juego() {
         <div className="bg-slate-700 h-screen">
             <div className='mx-auto'>
                 <h1 className="text-3xl text-center text-white uppercase pt-6">Pokemons Memory</h1>
+                {/* <h1 className="text-3xl text-center text-white uppercase pt-6">Marvel Memory</h1> */}
                 <div className="container mx-auto flex space-x-5">
                     <div className="text-white bg-gray-800 rounded mt-4 px-4 py-2 w-fit">
                         Clics Generales ({clicks})

@@ -17,7 +17,7 @@
   
 /* Clase de animación */
 .girando {
-    background-image: url("./src/assets/back-card.png");
+    background-image: url("../src/assets/back-card.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
