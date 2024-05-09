@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "../supabase/Supabase";
 
 export default function Partidas() {
     const [partidas, setPartidas] = useState([]);
@@ -6,9 +7,16 @@ export default function Partidas() {
     useEffect(() => {
         async function fetchPartidas(){
             try {
-                console.log('');
+                let { data, error } = await supabase
+                .from('partidas')
+                .select('*')
 
-                setPartidas(data);
+                if (error) {
+                    console.error('Error al iniciar usuario:', error.message)
+                    return
+                }
+              
+                setPartidas(data)
             } catch (error) {
                 console.error('Error al obtener las partidas:', error);
             }
@@ -17,6 +25,14 @@ export default function Partidas() {
         fetchPartidas()
     }, [])
 
+    const formatHora = (hora) => {
+        return hora ? hora.substr(0, 8) : ''
+    };
+    
+    const formatDate = (date) => {
+        return date ? date.substr(0, 10) : ''
+    };
+
     return (
         <div className="bg-slate-700 h-screen">
             <h1 className="text-3xl text-center text-white uppercase pt-6">
@@ -24,32 +40,40 @@ export default function Partidas() {
             </h1>
 
             <div className="container mx-auto p-5">
-                <table className="border w-full text-white text-center">
-                    <thead className="bg-zinc-600">
+                <table className="w-full text-white text-center">
+                    <thead className="bg-zinc-700">
                         <tr>
-                            <th className="p-3 border">Usuario</th>
-                            <th className="p-3 border">Puntuación</th>
-                            <th className="p-3 border">Clics</th>
-                            <th className="p-3 border">Fecha</th>
-                            <th className="p-3 border">Hora</th>
+                            <th className="p-4 border">Usuario</th>
+                            <th className="p-4 border">Puntuación</th>
+                            <th className="p-4 border">Clics</th>
+                            <th className="p-4 border">Fecha</th>
+                            <th className="p-4 border">Hora</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-slate-500"> {/* bg-zinc-500 */}
-                        <tr>
-                            <td className="p-3 border">partida.usuario</td>
-                            <td className="p-3 border">partida.puntuacion</td>
-                            <td className="p-3 border">partida.clicks</td>
-                            <td className="p-3 border">partida.fecha</td>
-                            <td className="p-3 border">partida.hora</td>
-                        </tr>
-                        {/* {partidas.map(partida => (
-                            <tr key={partida.id}>
-                                <td>{partida.usuario}</td>
-                                <td>{partida.puntuacion}</td>
-                                <td>{partida.fecha}</td>
-                                <td>{partida.hora}</td>
-                            </tr>
-                        ))} */}
+                    <tbody>
+                        {partidas.map(partida => {
+                            if(partida.id % 2 == 0){
+                                return (
+                                    <tr className="bg-slate-500" key={partida.id}>
+                                        <td className="p-4 border">{partida.name}</td>
+                                        <td className="p-4 border">{partida.points}</td>
+                                        <td className="p-4 border">{partida.clics}</td>
+                                        <td className="p-4 border">{formatDate(partida.created_at)}</td>
+                                        <td className="p-4 border">{formatHora(partida.hora)}</td>
+                                    </tr>
+                                )
+                            } else {
+                                return (
+                                    <tr className="bg-zinc-500" key={partida.id}>
+                                        <td className="p-4 border">{partida.name}</td>
+                                        <td className="p-4 border">{partida.points}</td>
+                                        <td className="p-4 border">{partida.clics}</td>
+                                        <td className="p-4 border">{formatDate(partida.created_at)}</td>
+                                        <td className="p-4 border">{formatHora(partida.hora)}</td>
+                                    </tr>
+                                )
+                            }
+                        })}
                     </tbody>
                 </table>
             </div>

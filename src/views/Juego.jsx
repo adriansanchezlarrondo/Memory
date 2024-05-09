@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GrupoTarjeta from "../components/GrupoTarjetas";
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../supabase/Supabase';
 
 export default function Juego() {
     const { puntuacion } = useAuth();
     const navigate = useNavigate()
+    
     const [clicks, setClicks] = useState(0);
     const [time, setTime] = useState(20);
     const [pokemonAletorios, setPokemonsAleatorios] = useState([]);
@@ -58,11 +60,37 @@ export default function Juego() {
     }
 
     useEffect(() => {
-        const timer = setTimeout(() => {
+        const timer = setTimeout(async () => {
             if (time > 0) {
                 setTime(time - 1);
             } else if (time == 0) {
-                // insertar datos de la partida una vez acabado el tiempo
+                let { data: dSelect, error: eSelect } = await supabase
+                .from('usuarios')
+                .select('nombre')
+
+                if (eSelect) {
+                    console.error('Error al seleccionar usuario:', eSelect.message)
+                    return
+                }
+
+                console.log('usuario', dSelect[0].nombre);
+                const usuario = dSelect[0].nombre
+
+                const { data: dInsert, error: eInsert } = await supabase
+                .from('partidas')
+                .insert([
+                    { 
+                        name: usuario,
+                        points: puntuacion,
+                        clics: clicks,
+                    },
+                ])
+
+                if (eInsert) {
+                    console.error('Error al seleccionar usuario:', eInsert.message)
+                    return
+                }
+
                 navigate('/partidas')
             }
         }, 1000);

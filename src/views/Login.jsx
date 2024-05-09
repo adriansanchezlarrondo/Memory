@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase/Supabase';
-import { useAuth } from '../contexts/AuthContext'; // Importa useAuth
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Login(){
     const navigate = useNavigate();
-    const { login } = useAuth(); // Obtén la función login del contexto AuthContext
+    const { login } = useAuth(); // contexto
 
     const [correo, setCorreo] = useState('');
     const [contraseña, setContraseña] = useState('');
@@ -35,7 +35,7 @@ export default function Login(){
                 return;
             }
 
-            login(); // Llama a la función login del contexto AuthContext para actualizar el estado logged
+            login();
             navigate('/pokemonMemory');
         } catch (error) {
             console.error('Error general:', error.message);

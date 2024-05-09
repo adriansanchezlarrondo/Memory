@@ -5,67 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Header() {
     const { logged, logout } = useAuth();
 
-    // const [logged, setLogged] = useState(false);
-    // const [email, setEmail] = useState('');
-
-    // useEffect(() => {
-    //     const loggedLS = localStorage.getItem('logged');
-    //     setLogged(loggedLS === 'true');
-
-    //     const fetchData = async () => {
-    //         try {
-    //             let { data, error } = await supabase
-    //             .from('usuarios')
-    //             .select('logged, email')
-            
-    //             if (error) {
-    //                 console.error('Error al registrar usuario:', error.message);
-    //                 return;
-    //             }
-
-    //             if (data.length > 0) {
-    //                 setEmail(data[0].email);
-    //                 setLogged(data[0].logged === 1);
-
-    //                 // Guardar en localStorage
-    //                 localStorage.setItem('logged', data[0].logged);
-    //                 localStorage.setItem('email', data[0].email);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error general:', error.message);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-    
-
-    // async function handleLogOut(){
-    //     try {
-    //         const { data, error } = await supabase
-    //         .from('usuarios')
-    //         .update({ logged: false })
-    //         .eq('email', email)
-    //         .eq('logged', true)
-    //         .select()
-
-    //         if (error) {
-    //             console.error('Error al registrar usuario:', error.message);
-    //             return;
-    //         }
-
-    //         console.log('data', data);
-
-    //         localStorage.removeItem('logged');
-    //         localStorage.removeItem('email');
-
-    //         setLogged(false);
-    //         setEmail('');
-    //     } catch (error) {
-    //         console.error('Error general:', error.message);
-    //     }
-    // }
-
     return (
         <header className="bg-zinc-50 py-4">
             <div className="container mx-auto flex items-center justify-between">
