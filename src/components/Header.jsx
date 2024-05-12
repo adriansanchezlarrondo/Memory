@@ -43,7 +43,7 @@ export default function Header() {
                                 </li>
                             </>
                         ) : (
-                            <li onClick={logout} >
+                            <li onClick={logout()} >
                                 <Link to="/login" className="border p-2 px-3 shadow-lg bg-zinc-600 text-white">Cerrar Sesión</Link>
                             </li>
                         )}

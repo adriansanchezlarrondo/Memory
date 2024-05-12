@@ -42,8 +42,6 @@ export default function Juego() {
                     id: index, 
                 }));
 
-
-                console.log('pokemonRandom', pokemonRandom);
                 setPokemonsAleatorios(pokemonRandom);
             } catch (error) {
                 console.error(error.message);
@@ -67,6 +65,7 @@ export default function Juego() {
                 let { data: dSelect, error: eSelect } = await supabase
                 .from('usuarios')
                 .select('nombre')
+                .eq('logged', true)
 
                 if (eSelect) {
                     console.error('Error al seleccionar usuario:', eSelect.message)

@@ -35,7 +35,7 @@ export default function Login(){
                 return;
             }
 
-            login();
+            login()
             navigate('/pokemonMemory');
         } catch (error) {
             console.error('Error general:', error.message);

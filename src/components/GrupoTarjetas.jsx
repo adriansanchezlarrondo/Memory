@@ -1,80 +1,53 @@
-import { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import Tarjeta from './Tarjeta';
+import { useState } from 'react'
+import { useAuth } from '../contexts/AuthContext'
+import Tarjeta from './Tarjeta'
 
-export default function GrupoTarjeta({ datos, onGeneralClick, setPokemonsAleatorios }) {
-    const { puntuacion, setPuntuacion } = useAuth(); // contexto
+export default function GrupoTarjeta({ datos, onGeneralClick }) {
+    const { puntuacion, setPuntuacion } = useAuth() // contexto
+
+    const [clickedPokemon, setClickedPokemon] = useState(null)
+    const [tarjetasVolteadas, setTarjetasVolteadas] = useState([])
+    const [parejas, setParejas] = useState([])
     
-    const [tarjetasVolteadas, setTarjetasVolteadas] = useState([]);
-
     const handleCardClick = (e) => {        
         // Verificar si la tarjeta ya está volteada o si ya hay dos tarjetas volteadas
         if (tarjetasVolteadas.length === 2 || tarjetasVolteadas.includes(parseInt(e.target.id))) {
             setTarjetasVolteadas([])
-            return;
+            return
         }
 
         const idClick = parseInt(e.target.id)
-        const clickedPokemon = datos.find(pokemon => pokemon.id === idClick)
+
+        if (clickedPokemon === null) {
+            const primerPokemon = datos.find(pokemon => pokemon.id === idClick)
+            primerPokemon.flipped = true
+
+            setClickedPokemon(idClick)
+        } else {
+            const segundoPokemon = datos.find(pokemon => pokemon.id === idClick)
+            segundoPokemon.flipped = true
+
+            setTarjetasVolteadas([...tarjetasVolteadas, clickedPokemon, idClick])
+
+            const primerTarjeta = datos.find(pokemon => pokemon.id === clickedPokemon)
+            const segundoTarjeta = datos.find(pokemon => pokemon.id === idClick)
     
-        if (clickedPokemon) {
-            const nuevosDatos = datos.map(pokemon => {
-                if (clickedPokemon.id === pokemon.id) {
-                    return {
-                        ...pokemon,
-                        flipped: true
-                    };
-                }
-                return pokemon
-            });
-
-            // Verificar si hay una coincidencia después de voltear esta tarjeta
-            if (tarjetasVolteadas.length === 1) {
-                const primeraTarjetaId = tarjetasVolteadas[0];
-                const primeraTarjetaPokemon = datos.find(pokemon => pokemon.id === primeraTarjetaId)
-
-                if (primeraTarjetaPokemon.nombre === clickedPokemon.nombre) {   // PAREJA ENCONTRADA
-                    console.log('pareja encontrada')
-                    setPuntuacion(puntuacion + 10)
-                    const pokemonMatches = nuevosDatos.map(pokemon => {
-                        if(pokemon.nombre == clickedPokemon.nombre){
-                            return {
-                                ...pokemon,
-                                matched: true
-                            }
-                        }
-                        return pokemon
-                    })
-
-                    console.log('pokemonMatches', pokemonMatches);
-
-                    setPokemonsAleatorios(pokemonMatches)
-                    setTarjetasVolteadas([])
-                } else {    // PAREJA EQUIVOCADA
-                    setTimeout(() => {    
-                        const resetPokemons = nuevosDatos.map(pokemon => {
-                            if(!pokemon.matched){
-                                console.log('pokemon.matched', pokemon.matched);
-                                return {
-                                    ...pokemon,
-                                    flipped: false
-                                }
-                            }
-                        })
-                        setPokemonsAleatorios(resetPokemons)
-                        setTarjetasVolteadas([])
-                    }, 1000)
-                }
+            if (primerTarjeta.idPokemon === segundoTarjeta.idPokemon) {
+                setParejas([...parejas, clickedPokemon, idClick])
+                setPuntuacion(puntuacion + 10)
+            } else {
+                setTimeout(() => {
+                    primerTarjeta.flipped = false
+                    segundoTarjeta.flipped = false
+                }, 800) 
             }
     
-            // Actualizar el estado de las tarjetas volteadas solo después de verificar la coincidencia
-            setPokemonsAleatorios(nuevosDatos)
-            setTarjetasVolteadas([...tarjetasVolteadas, idClick])
+            setClickedPokemon(null)
         }
-    
-        onGeneralClick();
+
+        onGeneralClick()
     }
-    
+
     return (
         <div className="bg-slate-700 p-5">
             <div className="bg-slate-900 container mx-auto grid grid-cols-6 gap-4 p-10">
@@ -90,5 +63,5 @@ export default function GrupoTarjeta({ datos, onGeneralClick, setPokemonsAleator
                 ))}
             </div>
         </div>
-    );
+    )
 }
