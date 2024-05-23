@@ -12,38 +12,43 @@ export default function Registro(){
     const handleSubmit = async (event) => {
         try {
             event.preventDefault();
-            // Aquí puedes manejar la lógica para enviar los datos del formulario
-            console.log('Nombre:', nombre);
-            console.log('Correo:', correo);
-            console.log('Contraseña:', contraseña);
+            if (nombre != '' && correo != '' && contraseña != ''){
+                // Aquí puedes manejar la lógica para enviar los datos del formulario
+                console.log('Nombre:', nombre);
+                console.log('Correo:', correo);
+                console.log('Contraseña:', contraseña);
 
-            let { data, error } = await supabase.auth.signUp({
-                email: correo,
-                password: contraseña
-            })
-            
-            if (error) {
-                console.error('Error al registrar usuario:', error.message);
-                return;
-            }
+                let { data, error } = await supabase.auth.signUp({
+                    email: correo,
+                    password: contraseña
+                })
+                
+                if (error) {
+                    console.error('Error al registrar usuario:', error.message);
+                    return;
+                }
 
-    
-            const { data: usuariosDB, error: dbError } = await supabase
-            .from('usuarios')
-            .insert([
-                {
-                    nombre: nombre, 
-                    email: correo, 
-                    user_id: data.user.id
-                },
-            ]);
         
-            if (dbError) {
-                console.error('Error al insertar usuario en la base de datos:', dbError.message);
-                return;
+                const { data: usuariosDB, error: dbError } = await supabase
+                .from('usuarios')
+                .insert([
+                    {
+                        nombre: nombre, 
+                        email: correo, 
+                        user_id: data.user.id
+                    },
+                ]);
+            
+                if (dbError) {
+                    console.error('Error al insertar usuario en la base de datos:', dbError.message);
+                    return;
+                }
+                            
+                navigate('/login')
+            } else {
+                alert('Introduce valores en el registro')
             }
-                        
-            navigate('/login')
+
         } catch (error) {
             console.error('Error general:', error.message);
         }

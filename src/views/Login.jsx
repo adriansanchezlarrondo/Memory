@@ -14,29 +14,33 @@ export default function Login(){
         event.preventDefault();
 
         try {
-            let { data: usuarios, error } = await supabase.auth.signInWithPassword({
-                email: correo,
-                password: contraseña,
-            })
-            
-            if (error) {
-                console.error('Error al iniciar usuario:', error.message);
-                return;
+            if (correo != '' && contraseña != ''){
+                let { data: usuarios, error } = await supabase.auth.signInWithPassword({
+                    email: correo,
+                    password: contraseña,
+                })
+                
+                if (error) {
+                    console.error('Error al iniciar usuario:', error.message);
+                    return;
+                }
+    
+                const { data: dataLogin, error: errorLogin } = await supabase
+                .from('usuarios')
+                .update({ logged: true })
+                .eq('email', correo)
+                .select()
+    
+                if (errorLogin) {
+                    console.error('Error al iniciar usuario:', errorLogin.message);
+                    return;
+                }
+    
+                login()
+                navigate('/pokemonMemory');
+            } else {
+                alert('Introduce valores en el inicio de sesión')
             }
-
-            const { data: dataLogin, error: errorLogin } = await supabase
-            .from('usuarios')
-            .update({ logged: true })
-            .eq('email', correo)
-            .select()
-
-            if (errorLogin) {
-                console.error('Error al iniciar usuario:', errorLogin.message);
-                return;
-            }
-
-            login()
-            navigate('/pokemonMemory');
         } catch (error) {
             console.error('Error general:', error.message);
         }
