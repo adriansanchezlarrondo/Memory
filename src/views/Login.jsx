@@ -56,6 +56,7 @@ export default function Login(){
                             Correo Electrónico
                         </label>
                         <input
+                        required
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="correo"
                         type="email"
@@ -69,6 +70,7 @@ export default function Login(){
                             Contraseña
                         </label>
                         <input
+                        required
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                         id="password"
                         type="password"
